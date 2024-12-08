@@ -20,15 +20,37 @@ def ConnectionDB(database):
         return False
 
 
-def Insert_in_column(database,table,values):
+def Insert_in_column(database,table,datos):
     #for psycopg2 the table is necessary to be in lowercase, even declarad in the DB
     if ConnectionDB(database):
+        
         try:
             cursor=connection.cursor()
+            encabezados = datos.columns
+            
+            #datos['ID_global'].iloc[1] #to get a specific data based in index
+            for i,_ in enumerate(datos.iterrows()):
+                row = datos.iloc[i]
+                
+                value = "("
+                for j,_ in enumerate(encabezados):
+                    if isinstance(row[encabezados[j]],str):
+                        value += f"'{row[encabezados[j]]}',"
+                    else:
+                        value += f"{str(row[encabezados[j]])},"
 
-            cursor.execute(f"INSERT INTO {table} VALUES {values}")
-            print("executed: "+f"INSERT INTO {table} VALUES {values}")
+                    #value = value+str(row[encabezados[j]])+","
+                value = value[:-1]+")"
+                
+                try:
+                    cursor.execute(f"INSERT INTO {table} VALUES {value}")
+                    print("executed: "+f"INSERT INTO {table} VALUES {value}")
+                except Exception as ex:
+                    print(f"error in the transaction: {ex}")
+
             connection.commit()
+            print("Upload Correctly")
+            return True
             
         except Exception as error:
             print(f"Error modifying the table: {error}")
