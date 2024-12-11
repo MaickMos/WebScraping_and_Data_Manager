@@ -1,7 +1,20 @@
 import json
 from pathlib import Path
+import pandas as pd
 import psycopg2
 
+def getDatafromCSV(file):
+    #A JSON is used to save all the path from the desktop
+    #We obtain the main path of the project
+    base_dir = Path().resolve()
+    #path(): returns a object type path
+    #.resolve: resolve posible issues eith the path
+    with open(base_dir / "config.json", "r") as f:
+        paths = json.load(f)
+        #Convert a file json in a dictonary
+    #Creacion de DataFrame en pandas
+    datos= pd.read_csv(paths[file])
+    return datos
 
 def ConnectionDB(database):
     try:
@@ -60,13 +73,23 @@ def Insert_in_column(database,table,datos):
             connection.close()
 
 
-def Querry(database,querry):
+def Querry(database,consult):
+    #Connecto to DB
     if ConnectionDB(database):
         try:
             cursor = connection.cursor()
-            cursor.execute(querry)
+            cursor.execute(consult)
+            
+            #if a querry:
+            if consult.strip().upper().startswith("SELECT"):
+                result= cursor.fetchall()
+                print("Querry successful")
+                return result
+            
+            #if diferent to a Querry
             connection.commit()
-            print("Querry Exitosa")
+            print("Changes applied")
+            
 
         except Exception as ex:
             print(f"Error al conectar a la base de datos: {ex}")

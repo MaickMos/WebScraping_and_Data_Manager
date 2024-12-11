@@ -20,7 +20,7 @@ def GetData(links):
     print("////////////////////////////////////////////////////")
     print(soup)
 
-def GetLinksTiktoks(link_cole):
+def GetLinksTiktoksFromCollection(link_cole):
     print("1: Opening Page...")
     driver = webdriver.Chrome()
 
@@ -62,18 +62,3 @@ def SaveData(num,name,link_cole,linkstiktok,archivo_csv):
         for i,link in enumerate(linkstiktok):
             writer.writerow([num+str(i),str(i),name,link])
 
-Cabecera=True
-# Abrir el archivo y leer sus líneas
-with open("Links_cole.txt", mode='r', encoding='utf-8') as file:
-    lines = file.readlines()
-for line in lines:
-    num_cole, name_cole, link_cole = line.strip().split(',')
-    print(link_cole)
-    linkstiktok=GetLinksTiktoks(link_cole)
-    with open("LinksTikToks.csv", mode='a', newline='', encoding='utf-8') as file:
-        writer = csv.writer(file)
-    # Escribir la cabecera
-        if Cabecera:
-            writer.writerow(["ID_global","ID_colleccion","Name_Collecion","Link"])
-        Cabecera=False
-    SaveData(num_cole,name_cole,link_cole,linkstiktok,"LinksTikToks.csv")
