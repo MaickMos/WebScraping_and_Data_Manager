@@ -65,12 +65,17 @@ class_tiktok_video = "css-8dx572-DivContainer-StyledDivContainerV2 eq741c50"
 chrome_options = Options()
 chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")  # Connect to depurate's port
 
-
+#open the driver that is already open
 driver = webdriver.Chrome(options=chrome_options)
+#Go to the page of the user
 driver.get(link_home_page_tiktok)
+#click in the button of favorite videos
 Click("."+class_button_favorite.replace(" ","."))
+#get the list of the links of the collections
 collections = Getlinkstiktoksfrompage(class_collection)
 print(collections)
+#save in the database
+
 #links = Getlinkstiktoksfrompage(class_tiktok_video)
 #print(links)
 
