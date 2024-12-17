@@ -1,5 +1,6 @@
 import time
 import json
+import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
@@ -50,34 +51,47 @@ def Getlinkstiktoksfrompage(className):
         wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "."+className.replace(" ","."))))
     
     urlsToDownload = driver.execute_script(script)
-    print(f"Found {len(urlsToDownload)} videos")
+    print(f"Found {len(urlsToDownload)} links")
     return urlsToDownload
+def OpenMainPageUser(link_home_page_tiktok):
+
+    class_button_favorite = "css-1wncxfu-PFavorite e1jjp0pq3"
+    class_collection = "css-13fa1gi-DivWrapper e1cg0wnj1"
+    class_tiktok_video = "css-8dx572-DivContainer-StyledDivContainerV2 eq741c50"
+
+    #driver = webdriver.Chrome()
+    #Open the page in a chrome already open
+    #First is necessary open chrome from the terminal: "chrome.exe --remote-debugging-port=9222 --user-data-dir="C:\Selenium"
+    #Put the port 9222 and indicate that the user c:selenium will be the instance going to use
+    print("Abriendo navegador")
+    # Comando que deseas ejecutar
+    command = r'start chrome.exe --remote-debugging-port=9222 --user-data-dir="C:\Selenium"'
+    # Ejecutar el comando
+    os.system(command)
+
+    chrome_options = Options()
+    chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")  # Connect to depurate's port
+
+    #open the driver that is already open
+    driver = webdriver.Chrome(options=chrome_options)
+    #Go to the page of the user
+    driver.get(link_home_page_tiktok)
+    #click in the button of favorite videos
+    Click("."+class_button_favorite.replace(" ","."))
+    #get the list of the links of the collections
+    collections = Getlinkstiktoksfrompage(class_collection)
+    print(collections)
+    #save in the database
+
+    #links = Getlinkstiktoksfrompage(class_tiktok_video)
+    #print(links)
+
 
 link_home_page_tiktok = "https://www.tiktok.com/@maickmos"
-class_button_favorite = "css-1wncxfu-PFavorite e1jjp0pq3"
-class_collection = "css-13fa1gi-DivWrapper e1cg0wnj1"
-class_tiktok_video = "css-8dx572-DivContainer-StyledDivContainerV2 eq741c50"
 
-#driver = webdriver.Chrome()
-#Open the page in a chrome already open
-#First is necessary open chrome from the terminal: r"
-#Put the port 9222 and indicate that the user c:selenium will be the instance going to use
-chrome_options = Options()
-chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")  # Connect to depurate's port
 
-#open the driver that is already open
-driver = webdriver.Chrome(options=chrome_options)
-#Go to the page of the user
-driver.get(link_home_page_tiktok)
-#click in the button of favorite videos
-Click("."+class_button_favorite.replace(" ","."))
-#get the list of the links of the collections
-collections = Getlinkstiktoksfrompage(class_collection)
-print(collections)
-#save in the database
 
-#links = Getlinkstiktoksfrompage(class_tiktok_video)
-#print(links)
+
 
 print("Esperando para cerrar...")
 time.sleep(60)
