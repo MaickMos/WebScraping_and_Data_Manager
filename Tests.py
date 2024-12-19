@@ -55,17 +55,19 @@ def Getlinkstiktoksfrompage(className,class_label):
     urlsToDownload = driver.execute_script(script)
 
     #get the label ////////Falta correr y hacer pruebas
-    script  = "let l = []; "
-    script += "Array.from(document.getElementsByClassName(\"" +class_label + "\")).forEach(item => { "
-    script += "    let label = item.querySelector('span'); "
-    script += "    if (label) { l.push(label.span); } "
+   # Obtener las etiquetas <span>
+    script  = "let labels = []; "
+    script += "Array.from(document.getElementsByClassName('" + class_label + "')).forEach(item => { "
+    script += "    let spans = item.querySelectorAll('span'); "  # Obtiene todos los <span>
+    script += "    spans.forEach(span => { labels.push(span.textContent); }); "  # Agrega el texto de cada <span>
     script += "}); "
-    script += "return l;"
-
+    script += "return labels;"
+    labels = driver.execute_script(script)
+    print(labels)
 
     print(f"Found {len(urlsToDownload)} links")
 
-    return number,urlsToDownload,name,count
+    return "",urlsToDownload,"",""
 
 def OpenMainPageUser(link_home_page_tiktok):
     #driver = webdriver.Chrome()
