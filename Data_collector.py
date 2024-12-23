@@ -5,7 +5,7 @@ import requests
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import csv
-
+driver = webdriver.Chrome()
 def GetData(links):
     #for index, url in enumerate(links):
     #    print(f"Video {index}")
@@ -18,7 +18,7 @@ def GetData(links):
 
     print(findas)
     print("////////////////////////////////////////////////////")
-    print(soup)
+    print(soup) 
 
 def GetLinksTiktoksFromCollection(link_cole):
     print("1: Opening Page...")
@@ -55,10 +55,3 @@ def GetLinksTiktoksFromCollection(link_cole):
     urlsToDownload = driver.execute_script(script)
     print(f"Found {len(urlsToDownload)} videos")
     return urlsToDownload
-
-def SaveData(num,name,link_cole,linkstiktok,archivo_csv):
-    with open(archivo_csv, mode='a', newline='', encoding='utf-8') as file:
-        writer = csv.writer(file)
-        for i,link in enumerate(linkstiktok):
-            writer.writerow([num+str(i),str(i),name,link])
-
