@@ -6,14 +6,20 @@ import psycopg2
 def getDatafromCSV(file):
     #A JSON is used to save all the path from the desktop
     #We obtain the main path of the project
-    base_dir = Path().resolve()
+    try:
+        #for pyhton file .py
+        base_dir = Path(__file__).resolve().parent
+        print(str(base_dir))
+    except NameError:
+        #For Jupyter Notebook
+        base_dir = Path().resolve()
     #path(): returns a object type path
     #.resolve: resolve posible issues eith the path
     with open(base_dir / "config.json", "r") as f:
         paths = json.load(f)
         #Convert a file json in a dictonary
     #Creacion de DataFrame en pandas
-    datos= pd.read_csv(paths[file])
+    datos= pd.read_csv(base_dir / paths[file])
     return datos
 
 def ConnectionDB(database):
@@ -97,3 +103,4 @@ def Querry(database,consult):
         finally:
             cursor.close()
             connection.close()
+print(getDatafromCSV("tiktoks_links_v1"))

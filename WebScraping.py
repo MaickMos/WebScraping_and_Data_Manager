@@ -1,6 +1,7 @@
 import time
 import json
 import os
+from pathlib import Path
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
@@ -69,7 +70,7 @@ def Getlinkstiktoksfrompage(className,class_label):
 
     return "",urlsToDownload,"",""
 
-def OpenMainPageUser(link_home_page_tiktok):
+def OpenMainPageUser(link_home_page_tiktok,class_button_favorite):
     #driver = webdriver.Chrome()
     #Open the page in a chrome already open
     #First is necessary open chrome from the terminal: "chrome.exe --remote-debugging-port=9222 --user-data-dir="C:\Selenium"
@@ -92,18 +93,23 @@ def OpenMainPageUser(link_home_page_tiktok):
     Click("."+class_button_favorite.replace(" ","."))
 
 
+#Get the path of the file, for .py or jupyter
+try:
+    #for pyhton file .py
+    base_dir = Path(__file__).resolve().parent
+except NameError:
+    #For Jupyter Notebook
+    base_dir = Path().resolve()
 
-link_home_page_tiktok = "https://www.tiktok.com/@maickmos"
-class_button_favorite = "css-1wncxfu-PFavorite e1jjp0pq3"
-class_collection = "css-13fa1gi-DivWrapper e1cg0wnj1"
-class_tiktok_video = "css-8dx572-DivContainer-StyledDivContainerV2 eq741c50"
-class_label = "css-12lihtw"
-OpenMainPageUser(link_home_page_tiktok)
+with open(base_dir / "html_class_tk.json", "r") as f:
+    paths = json.load(f)
+
+OpenMainPageUser(paths["link_home_page_tiktok"],paths["class_button_favorite"])
 
 #get the list of the links of the collections
-number,link,name,count = Getlinkstiktoksfrompage(class_collection,class_label)
+number,link,name,count = Getlinkstiktoksfrompage(paths["class_collection"],paths["class_label"])
 
-print(number,link,name,count )
+print(number,link,name,count)
 #Save in the database
 database = "collection_tk"
 table = "tiktok_links_v1"
