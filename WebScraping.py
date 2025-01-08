@@ -7,7 +7,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import Connection_DB as DB
 
 def ScrollPage(scroll_pause_time):
     #get the screen_height tes 
@@ -55,20 +54,33 @@ def Getlinkstiktoksfrompage(className,class_label):
     script += "return l;"
     urlsToDownload = driver.execute_script(script)
 
-    #get the label ////////Falta correr y hacer pruebas
-   # Obtener las etiquetas <span>
+    #get the labels <span>
     script  = "let labels = []; "
     script += "Array.from(document.getElementsByClassName('" + class_label + "')).forEach(item => { "
-    script += "    let spans = item.querySelectorAll('span'); "  # Obtiene todos los <span>
-    script += "    spans.forEach(span => { labels.push(span.textContent); }); "  # Agrega el texto de cada <span>
+    script += "    let spans = item.querySelectorAll('span'); "
+    script += "    spans.forEach(span => { labels.push(span.textContent); }); "  # Ad the text in a array
     script += "}); "
     script += "return labels;"
     labels = driver.execute_script(script)
+    
     print(labels)
+    
+    number = []
+    name = []
+    count = []
 
-    print(f"Found {len(urlsToDownload)} links")
+    for text in labels:
+        datos = text.split(".",1)
+        if len(datos) == 2:
+            number.append(datos[0])
+            name.append(datos[1])
+        else:
+            name.append(datos[0])
+        if 'videos' in datos:
+            count.append(text.split()[0])
 
-    return "",urlsToDownload,"",""
+    return number,urlsToDownload,name,count
+    #number,link,name,count
 
 def OpenMainPageUser(link_home_page_tiktok,class_button_favorite):
     #driver = webdriver.Chrome()
@@ -83,11 +95,12 @@ def OpenMainPageUser(link_home_page_tiktok,class_button_favorite):
 
     chrome_options = Options()
     chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")  # Connect to depurate's port
-
+    
     #open the driver that is already open
     global driver
     driver = webdriver.Chrome(options=chrome_options)
     #Go to the page of the user
+    time.sleep(1)
     driver.get(link_home_page_tiktok)
     #click in the button of favorite videos
     Click("."+class_button_favorite.replace(" ","."))
