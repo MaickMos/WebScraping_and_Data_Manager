@@ -9,7 +9,6 @@ def getDatafromCSV(file):
     try:
         #for pyhton file .py
         base_dir = Path(__file__).resolve().parent
-        print(str(base_dir))
     except NameError:
         #For Jupyter Notebook
         base_dir = Path().resolve()
@@ -103,4 +102,3 @@ def Querry(database,consult):
         finally:
             cursor.close()
             connection.close()
-print(getDatafromCSV("tiktoks_links_v1"))
