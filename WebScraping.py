@@ -36,7 +36,21 @@ def Click(class_element):
     except Exception as error:
         print(f"Error en: {error}")
 
-def Getlinkstiktoksfrompage(className,class_label):
+def Getlinkstiktoksfrompage(class_collection,class_text):
+
+        #Get the path of the file, for .py or jupyter
+    try:
+        #for pyhton file .py
+        base_dir = Path(__file__).resolve().parent
+    except NameError:
+        #For Jupyter Notebook
+        base_dir = Path().resolve()
+
+    with open(base_dir / "html_class_tk.json", "r") as f:
+        paths = json.load(f)
+
+    className = paths[class_collection]
+    class_label = paths[class_text]
     print("Getting links of videos...")
 
     wait = WebDriverWait(driver, 10)  # Espera hasta 10 segundos
@@ -83,6 +97,18 @@ def Getlinkstiktoksfrompage(className,class_label):
     #number,link,name,count
 
 def OpenMainPageUser(link_home_page_tiktok,class_button_favorite):
+
+    #Get the path of the file, for .py or jupyter
+    try:
+        #for pyhton file .py
+        base_dir = Path(__file__).resolve().parent
+    except NameError:
+        #For Jupyter Notebook
+        base_dir = Path().resolve()
+
+    with open(base_dir / "html_class_tk.json", "r") as f:
+        paths = json.load(f)
+
     #driver = webdriver.Chrome()
     #Open the page in a chrome already open
     #First is necessary open chrome from the terminal: "chrome.exe --remote-debugging-port=9222 --user-data-dir="C:\Selenium"
@@ -101,36 +127,7 @@ def OpenMainPageUser(link_home_page_tiktok,class_button_favorite):
     driver = webdriver.Chrome(options=chrome_options)
     #Go to the page of the user
     time.sleep(1)
-    driver.get(link_home_page_tiktok)
+    driver.get(paths[link_home_page_tiktok])
     #click in the button of favorite videos
-    Click("."+class_button_favorite.replace(" ","."))
+    Click("."+paths[class_button_favorite].replace(" ","."))
 
-
-#Get the path of the file, for .py or jupyter
-try:
-    #for pyhton file .py
-    base_dir = Path(__file__).resolve().parent
-except NameError:
-    #For Jupyter Notebook
-    base_dir = Path().resolve()
-
-with open(base_dir / "html_class_tk.json", "r") as f:
-    paths = json.load(f)
-
-OpenMainPageUser(paths["link_home_page_tiktok"],paths["class_button_favorite"])
-
-#get the list of the links of the collections
-number,link,name,count = Getlinkstiktoksfrompage(paths["class_collection"],paths["class_label"])
-
-print(number,link,name,count)
-#Save in the database
-database = "collection_tk"
-table = "tiktok_links_v1"
-#DB.Insert_in_column(table,table,collections)
-
-#links = Getlinkstiktoksfrompage(class_tiktok_video)
-#print(links)
-
-
-print("Esperando para cerrar...")
-time.sleep(60)
