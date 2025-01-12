@@ -8,7 +8,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-def ScrollPage(scroll_pause_time):
+def scroll_page(scroll_pause_time):
     #get the screen_height tes 
     screen_height = driver.execute_script("return window.screen.height;")
     i = 1
@@ -22,7 +22,7 @@ def ScrollPage(scroll_pause_time):
         if (screen_height) * i > scroll_height:
             break
 
-def Click(class_element):
+def click(class_element):
     try:
         print("Doing Click in button collection")
         element = driver.find_element(By.CSS_SELECTOR, class_element)
@@ -36,7 +36,7 @@ def Click(class_element):
     except Exception as error:
         print(f"Error en: {error}")
 
-def Getlinkstiktoksfrompage(class_collection,class_text):
+def get_links_collections_from_page(class_collection,class_text):
 
         #Get the path of the file, for .py or jupyter
     try:
@@ -96,8 +96,7 @@ def Getlinkstiktoksfrompage(class_collection,class_text):
     return number,urlsToDownload,name,count
     #number,link,name,count
 
-def OpenMainPageUser(link_home_page_tiktok,class_button_favorite):
-
+def open_main_page_user(link_home_page_tiktok,class_button_favorite):
     #Get the path of the file, for .py or jupyter
     try:
         #for pyhton file .py
@@ -131,3 +130,5 @@ def OpenMainPageUser(link_home_page_tiktok,class_button_favorite):
     #click in the button of favorite videos
     Click("."+paths[class_button_favorite].replace(" ","."))
 
+def get_links_videos_from_collection():  
+    pass

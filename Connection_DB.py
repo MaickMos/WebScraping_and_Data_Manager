@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 import psycopg2
 
-def getDatafromCSV(file):
+def get_data_from_CSV(file):
     #A JSON is used to save all the path from the desktop
     #We obtain the main path of the project
     try:
