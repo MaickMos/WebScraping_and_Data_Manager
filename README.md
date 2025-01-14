@@ -10,6 +10,7 @@ Las principales herramientras usadas son las de:
 * BeatifulSoup
 * SQL
 * Git
+* PostgreSQL
 
 This is a project in which allows downloading videos from tiktok collections a feature that allows create groups of videos. You only need to enter the link of each collection and the software will take care of retrieving the link for each video, after creating a database with this data and assigning a class based on the collection name and a representative number inside the database. Finally the video will be download and save in a representative folder, with easy access and realice a data analitic from this videos.
 The main tools used are:
