@@ -96,19 +96,8 @@ def get_links_collections_from_page(class_collection,class_text):
     return number,urlsToDownload,name,count
     #number,link,name,count
 
-def open_main_page_user(link_home_page_tiktok,class_button_favorite):
-    #Get the path of the file, for .py or jupyter
-    try:
-        #for pyhton file .py
-        base_dir = Path(__file__).resolve().parent
-    except NameError:
-        #For Jupyter Notebook
-        base_dir = Path().resolve()
-
-    with open(base_dir / "html_class_tk.json", "r") as f:
-        paths = json.load(f)
-
-    #driver = webdriver.Chrome()
+def open_browser():
+        #driver = webdriver.Chrome()
     #Open the page in a chrome already open
     #First is necessary open chrome from the terminal: "chrome.exe --remote-debugging-port=9222 --user-data-dir="C:\Selenium"
     #Put the port 9222 and indicate that the user c:selenium will be the instance going to use
@@ -124,11 +113,43 @@ def open_main_page_user(link_home_page_tiktok,class_button_favorite):
     #open the driver that is already open
     global driver
     driver = webdriver.Chrome(options=chrome_options)
-    #Go to the page of the user
     time.sleep(1)
+
+def get_html_class():
+        #Get the path of the file, for .py or jupyter
+    try:
+        #for pyhton file .py
+        base_dir = Path(__file__).resolve().parent
+    except NameError:
+        #For Jupyter Notebook
+        base_dir = Path().resolve()
+
+    with open(base_dir / "html_class_tk.json", "r") as f:
+        return json.load(f)
+
+def open_main_page_user(link_home_page_tiktok,class_button_favorite):
+    paths = get_html_class()
+    open_browser()
+    #Go to the page of the user
     driver.get(paths[link_home_page_tiktok])
     #click in the button of favorite videos
-    Click("."+paths[class_button_favorite].replace(" ","."))
+    click("."+paths[class_button_favorite].replace(" ","."))
 
-def get_links_videos_from_collection():  
-    pass
+def get_links_videos_from_collection(link_colection):
+    paths = get_html_class()
+    open_browser()
+    driver.get(link_colection)
+    scroll_page(1)
+
+    # this class may change, so make sure to inspect the page and find the correct class
+    #LINK
+    className = paths["class_video_tiktok"]
+    script  = "let l = [];"
+    script += "document.getElementsByClassName(\""
+    script += className
+    script += "\").forEach(item => { l.push(item.querySelector('a').href)});"
+    script += "return l;"
+
+    urlsToDownload = driver.execute_script(script)
+    print(f"Found {len(urlsToDownload)} videos")
+    return urlsToDownload
