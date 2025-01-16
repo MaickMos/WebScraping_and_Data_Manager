@@ -77,7 +77,6 @@ def Insert_in_column(database,table,datos):
             cursor.close()
             connection.close()
 
-
 def Querry(database,consult):
     #Connecto to DB
     if ConnectionDB(database):
@@ -102,3 +101,17 @@ def Querry(database,consult):
         finally:
             cursor.close()
             connection.close()
+        
+def get_data_from_DB(database,table):
+        #database = "collection_tk"
+    #table = "tiktok_links_v1"
+    #get the links of collections from DB
+    #get the number of collections
+    consult = f"SELECT COUNT(name) FROM {table}"
+    resultado = Querry(database,consult)
+    print(resultado)
+    for i in len(resultado):
+        consult = f"SELECT * FROM {table} where ID = {i}"
+        resultado = Querry(database,consult)
+        #DB.Insert_in_column(database,table,resultado)
+        #agregar una comprobacion de los datos antes de subir a la base de datos
