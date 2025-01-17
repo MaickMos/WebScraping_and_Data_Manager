@@ -115,3 +115,11 @@ def get_data_from_DB(database,table):
         resultado = Querry(database,consult)
         #DB.Insert_in_column(database,table,resultado)
         #agregar una comprobacion de los datos antes de subir a la base de datos
+
+#function main, is execute when the script is running directly
+def main():
+    raise NotImplementedError
+#check if this file is execute like a module or directly.
+#If is a module not execute the function main
+if __name__ == "__main__":
+    main()
