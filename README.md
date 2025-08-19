@@ -1,26 +1,90 @@
-<h1 align="center">Collection-Based Video Downloader and Data Manager<img height="40"></h1>
+# Downloader-videos-and-data-analyzer
 
--------------------
-&emsp;
-<h3>Este es un proyecto el cual permite descargar videos de tiktok apartir de la caracteristica llamada colecciones dentro esta misma plataforma. Solo se debera ingresar el link de cada una de las colecciones de tiktok y el codigo se encargara de obtener cada una de los links pertenecientes a cada video, crear una base de datos con estos, otorgandoles una clase que sera el nombre de la coleccion y un numero representativo, dspues se descarga el video en sus respectivas carpetas. Para facilitar su accesibilidad y realizar una analisis de los datos obtenidos.
+This project provides a tool to **download TikTok videos directly from collections**. By simply entering the link of any TikTok collection, the program automatically extracts all video links within that collection, stores them in a database, and organizes them for easy access and analysis.
 
-Las principales herramientras usadas son las de:
-* Selenium
-* Pandas
-* BeatifulSoup
-* SQL
-* Git
-* PostgreSQL
+Each video is categorized with a **class (the collection’s name)** and assigned a **unique identifier**, then downloaded into corresponding folders for structured storage.
 
-This is a project in which allows downloading videos from tiktok collections a feature that allows create groups of videos. You only need to enter the link of each collection and the software will take care of retrieving the link for each video, after creating a database with this data and assigning a class based on the collection name and a representative number inside the database. Finally the video will be download and save in a representative folder, with easy access and realice a data analitic from this videos.
-The main tools used are:
-* Selenium
-* Pandas
-* BeautifulSoup
-* SQL
-* Git
-</h3>
-&emsp;
+This enables not only simplified video access but also the ability to **analyze the extracted data** efficiently.
 
--------------------
+---
+
+## ✨ Features
+
+* Extract all video links from a TikTok collection.
+* Automatically create and manage a **PostgreSQL database** with video information.
+* Classify videos by collection name and ID.
+* Download videos into organized folders by collection.
+* Enable structured analysis of TikTok video data.
+
+---
+
+## 🛠️ Technologies Used
+
+* **Selenium** – for automated browsing and scraping.
+* **BeautifulSoup** – for parsing HTML content.
+* **Pandas** – for data handling and analysis.
+* **SQL / PostgreSQL** – for database storage and management.
+* **Git** – for version control.
+
+---
+
+## 🚀 How It Works
+
+1. Provide one or more TikTok collection links.
+2. The script extracts all video URLs from each collection.
+3. A PostgreSQL database is created/updated with video metadata.
+4. Videos are downloaded into organized folders.
+5. Data can be easily accessed for further analysis or processing.
+
+---
+
+## 📂 Project Structure
+
+```
+📦 tiktok-collections-downloader
+ ┣ 📂 data                # Video database and metadata
+ ┣ 📂 downloads           # Downloaded videos organized by collection
+ ┣ 📜 main.py             # Main script
+ ┣ 📜 requirements.txt    # Dependencies
+ ┗ 📜 README.md           # Project documentation
+```
+
+---
+
+## ⚡ Installation & Usage
+
+1. Clone this repository:
+
+   ```bash
+   git clone https://github.com/your-username/tiktok-collections-downloader.git
+   cd tiktok-collections-downloader
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Configure your PostgreSQL connection in `config.py`.
+
+4. Run the script and input TikTok collection links:
+
+   ```bash
+   python main.py
+   ```
+
+---
+
+## 📊 Example Use Case
+
+* Save and organize your favorite TikTok collections.
+* Build datasets for analysis.
+* Automate video archiving for research or personal use.
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License.
 
