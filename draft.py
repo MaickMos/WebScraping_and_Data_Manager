@@ -1,52 +1,3 @@
-
-
-def get_links_collections_from_page(driver_chrome,class_collection,class_text):
-    with open("data" / "html_class_tk.json", "r") as f:
-        paths = json.load(f)
-
-    className = paths["class_collection"]
-    class_label = paths["class_text"]
-    print("Getting links of videos...")
-
-    wait = WebDriverWait(driver_chrome, 10)  # wait 10 seconds for cathcath
-
-    #get the link
-    script  = "let l = []; "
-    script += "Array.from(document.getElementsByClassName(\"" +className + "\")).forEach(item => { "
-    script += "    let link = item.querySelector('a'); "
-    script += "    if (link) { l.push(link.href); } "
-    script += "}); "
-    script += "return l;"
-    urlsToDownload = driver_chrome.execute_script(script)
-
-    #get the labels <span>
-    script  = "let labels = []; "
-    script += "Array.from(document.getElementsByClassName('" + class_label + "')).forEach(item => { "
-    script += "    let spans = item.querySelectorAll('span'); "
-    script += "    spans.forEach(span => { labels.push(span.textContent); }); "  # Ad the text in a array
-    script += "}); "
-    script += "return labels;"
-    labels = driver_chrome.execute_script(script)
-    
-    print(labels)
-    
-    number = []
-    name = []
-    count = []
-    for text in labels:
-        datos = text.split(".",1)
-        if len(datos) == 2:
-            number.append(datos[0])
-            name.append(datos[1])
-        else:
-            name.append(datos[0])
-        if 'videos' in datos:
-            count.append(text.split()[0])
-
-    return number,urlsToDownload,name,count
-    #number,link,name,count
-
-
 def GetLinksTiktoks(link_cole):
     driver_chrome = scraping_utils.open_browser()
 
@@ -89,3 +40,42 @@ def get_links_videos_from_collection(link_colection):
     urlsToDownload = driver.execute_script(script)
     print(f"Found {len(urlsToDownload)} videos")
     return urlsToDownload
+
+
+Cabecera=True
+totalvideos = []
+# Abrir el archivo y leer sus líneas
+with open("Link_cole.txt", mode='r', encoding='utf-8') as file:
+    lines = file.readlines()
+for line in lines:
+    try:
+        Cabecerasub=True
+        num_cole, name_cole, link_cole = line.strip().split(',')
+        print(name_cole)
+        linkstiktok=GetLinksTiktoks(link_cole)
+        totalvideos.append(name_cole+";"+str(len(linkstiktok)))
+        #Save in main Database 
+        with open("Links/LinksTikToks.csv", mode='a', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+        # Escribir la cabecera
+            if Cabecera:
+                writer.writerow(["ID_global","ID_colleccion","Name_Collecion","Link"])
+            Cabecera=False
+        SaveData(num_cole,name_cole,link_cole,linkstiktok,"Links/LinksTikToks.csv")
+        #Save in sub-Database
+        with open(f"Links/LinksTikToks{name_cole}.csv", mode='a', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+        # Escribir la cabecera
+            if Cabecerasub:
+                writer.writerow(["ID_global","ID_colleccion","Name_Collecion","Link"])
+            Cabecerasub=False
+        SaveData(num_cole,name_cole,link_cole,linkstiktok,f"Links/LinksTikToks{name_cole}.csv")
+    except:
+        with open("Links/Error.csv", mode='a', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            writer.writerow(f"error en coleccion: {name_cole}")
+
+with open("Links/Total_links.csv", mode='a', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file)
+    # Escribir la cabecera
+        writer.writerow(totalvideos)

@@ -8,13 +8,14 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.common import exceptions
 
 
 def open_browser():
     #Open the page in a chrome already open
     #First is necessary open chrome from the terminal: "chrome.exe --remote-debugging-port=9222 --user-data-dir="C:\Selenium"
     #Put the port 9222 and indicate that the user c:selenium will be the instance going to use
-    print("Abriendo navegador")
+    print("Opening navegator")
     # command to execute in cmd
     command = r'start chrome.exe --remote-debugging-port=9222 --user-data-dir="C:\Selenium"'
     os.system(command)
@@ -41,19 +42,6 @@ def scroll_page(driver, scroll_pause_time):
         if (screen_height) * i > scroll_height:
             break
 
-def click(driver_chrome,class_element):
-    try:
-        print("clicking in button collection")
-        element = driver_chrome.find_element(By.XPATH, "//* [contains(@class, 'PFavorite')]")
-        print("Waiting that existed the element")
-        WebDriverWait(driver_chrome,10).until(
-            EC.presence_of_all_elements_located(By.XPATH, "//* [contains(@class, 'PFavorite')]")
-        )
-        element.click()
-        print("click")
-        
-    except Exception as error:
-        print(f"Error en: {error}")
 
 def get_html_class():
 
@@ -61,8 +49,27 @@ def get_html_class():
         return json.load(f)
 
 def open_page_collection_from_profile(driver_chrome,paths):
-    #Go to the page of the user
-    driver_chrome.get(paths["link_home_page_tiktok"])
-    
-    #click in the button of favorite videos
-    click(driver_chrome,"."+paths["class_button_favorite"])#.replace(" ","."))
+    try:
+        #Go to the page of the user
+        driver_chrome.get(paths["link_home_page_tiktok"])
+        #click in the button of favorite videos
+        print("clicking in button Favorites")
+        element = WebDriverWait(driver_chrome, 15).until(
+            EC.presence_of_element_located((By.XPATH, "//p[contains(@class,'PFavorite')]"))
+            )
+        element.click()
+
+        print("clicking in button collections")
+        element = WebDriverWait(driver_chrome, 15).until(
+        EC.element_to_be_clickable((By.ID, "collections"))
+        )
+        element.click()
+
+        return True
+    except exceptions.NoSuchElementException:
+        print("Element didn't find" )
+        return False
+    except exceptions:
+        print("Error Clicking the element" )
+        return False
+        
