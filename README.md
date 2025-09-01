@@ -1,4 +1,4 @@
-# Downloader-videos-and-data-analyzer
+# WebScraping and Data Manager
 
 This project provides a tool to **download TikTok videos directly from collections**. By simply entering the link of any TikTok collection, the program automatically extracts all video links within that collection, stores them in a database, and organizes them for easy access and analysis.
 
