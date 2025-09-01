@@ -41,12 +41,26 @@ This enables not only simplified video access but also the ability to **analyze 
 ## 📂 Project Structure
 
 ```
-📦 tiktok-collections-downloader
- ┣ 📂 data                # Video database and metadata
- ┣ 📂 downloads           # Downloaded videos organized by collection
- ┣ 📜 main.py             # Main script
- ┣ 📜 requirements.txt    # Dependencies
- ┗ 📜 README.md           # Project documentation
+tiktok-collections-downloader/
+├── data/                      # Persistent data
+│   ├── links/                 # Collection links (.txt, .csv)
+│   ├── collections/           # Extracted collection metadata
+│   └── downloads/             # Downloaded videos organized by collection
+├── src/                       # Source code
+│   ├── scrapers/              # Scrapers using Selenium / BeautifulSoup
+│   ├── database/              # PostgreSQL connection and queries
+│   ├── utils/                 # Helper functions (logging, paths, validations, etc.)
+│   └── __init__.py
+├── tests/                     # Unit and integration tests
+│   ├── test_scrapers.py
+│   ├── test_database.py
+│   └── test_utils.py
+├── main.py                    # Entry point script
+├── config.py                  # Configuration (DB, paths, variables)
+├── requirements.txt           # Dependencies
+├── .gitignore                 # Ignore downloads, cache, and heavy data
+└── README.md                  # Project documentation
+
 ```
 
 ---
